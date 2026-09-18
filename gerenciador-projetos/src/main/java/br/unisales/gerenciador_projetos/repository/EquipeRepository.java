@@ -1,6 +1,6 @@
-package br.unisales.gerenciadorprojetos.repository;
+package br.unisales.gerenciador_projetos.repository;
 
-import br.unisales.gerenciadorprojetos.entity.Equipe;
+import br.unisales.gerenciador_projetos.entity.Equipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EquipeRepository extends JpaRepository<Equipe, Long> {

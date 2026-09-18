@@ -1,4 +1,4 @@
-package br.unisales.gerenciadorprojetos.exception;
+package br.unisales.gerenciador_projetos.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

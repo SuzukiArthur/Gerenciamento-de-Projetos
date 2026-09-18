@@ -1,4 +1,4 @@
-package br.unisales.gerenciadorprojetos.exception;
+package br.unisales.gerenciador_projetos.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

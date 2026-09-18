@@ -1,5 +1,5 @@
 
-package br.unisales.gerenciadorprojetos.security;
+package br.unisales.gerenciador_projetos.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

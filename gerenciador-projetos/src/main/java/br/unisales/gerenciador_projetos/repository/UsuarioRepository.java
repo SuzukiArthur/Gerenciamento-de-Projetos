@@ -1,6 +1,6 @@
-package br.unisales.gerenciadorprojetos.repository;
+package br.unisales.gerenciador_projetos.repository;
 
-import br.unisales.gerenciadorprojetos.entity.Usuario;
+import br.unisales.gerenciador_projetos.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
