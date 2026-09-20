@@ -1,0 +1,505 @@
+{
+  "info": {
+    "name": "Gerenciamento de Projetos",
+    "description": "Collection para testar a API REST de gerenciamento de projetos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "admin",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "admin",
+      "type": "string"
+    },
+    {
+      "key": "usuarioId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "projetoId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "tarefaId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "equipeId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "anexoId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{username}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{password}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "USUÁRIOS",
+      "item": [
+        {
+          "name": "Criar usuário",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Arthur Yuji\",\n  \"login\": \"arthur\",\n  \"senha\": \"123456\",\n  \"funcao\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios"]
+            }
+          }
+        },
+        {
+          "name": "Listar usuários",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios"]
+            }
+          }
+        },
+        {
+          "name": "Buscar usuário por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar usuário",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Arthur Yuji Atualizado\",\n  \"login\": \"arthur\",\n  \"senha\": \"654321\",\n  \"funcao\": \"GERENTE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir usuário",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "usuarios", "{{usuarioId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PROJETOS",
+      "item": [
+        {
+          "name": "Criar projeto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sistema de Gestão\",\n  \"supervisor\": \"Maria\",\n  \"descricao\": \"Projeto para gerenciar tarefas e equipes.\",\n  \"dataInicio\": \"2026-09-01\",\n  \"dataFim\": \"2026-12-31\",\n  \"status\": \"EM_ANDAMENTO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos"]
+            }
+          }
+        },
+        {
+          "name": "Listar projetos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos"]
+            }
+          }
+        },
+        {
+          "name": "Listar projetos paginados",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos/paginado?pagina=0&tamanho=5&ordenarPor=idProjeto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos", "paginado"],
+              "query": [
+                { "key": "pagina", "value": "0" },
+                { "key": "tamanho", "value": "5" },
+                { "key": "ordenarPor", "value": "idProjeto" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar projeto por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos/{{projetoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos", "{{projetoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Listar tarefas do projeto",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos/{{projetoId}}/tarefas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos", "{{projetoId}}", "tarefas"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar projeto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sistema de Gestão Atualizado\",\n  \"supervisor\": \"Maria\",\n  \"descricao\": \"Projeto revisado com novas etapas.\",\n  \"dataInicio\": \"2026-09-01\",\n  \"dataFim\": \"2027-01-31\",\n  \"status\": \"PLANEJADO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos/{{projetoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos", "{{projetoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir projeto",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/projetos/{{projetoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projetos", "{{projetoId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "TAREFAS",
+      "item": [
+        {
+          "name": "Criar tarefa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Modelar entidades\",\n  \"descricao\": \"Criar os modelos JPA e validar os relacionamentos.\",\n  \"dataInicio\": \"2026-09-10\",\n  \"prazo\": \"2026-09-15\",\n  \"prioridade\": \"ALTA\",\n  \"status\": \"ABERTA\",\n  \"idProjeto\": 1,\n  \"idResponsavel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas"]
+            }
+          }
+        },
+        {
+          "name": "Listar tarefas",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar tarefas por projeto",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas?projetoId={{projetoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas"],
+              "query": [
+                { "key": "projetoId", "value": "{{projetoId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filtrar tarefas por responsável",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas?responsavelId={{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas"],
+              "query": [
+                { "key": "responsavelId", "value": "{{usuarioId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar tarefa por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas", "{{tarefaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar tarefa",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Modelar entidades e DTOs\",\n  \"descricao\": \"Atualização da modelagem do sistema.\",\n  \"dataInicio\": \"2026-09-10\",\n  \"prazo\": \"2026-09-20\",\n  \"prioridade\": \"MEDIA\",\n  \"status\": \"EM_ANDAMENTO\",\n  \"idProjeto\": 1,\n  \"idResponsavel\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas", "{{tarefaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir tarefa",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/tarefas/{{tarefaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tarefas", "{{tarefaId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "EQUIPES",
+      "item": [
+        {
+          "name": "Criar equipe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Equipe de Backend\",\n  \"descricao\": \"Equipe responsável por API e regras de negócio.\",\n  \"idProjeto\": 1,\n  \"idUsuario\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/equipes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "equipes"]
+            }
+          }
+        },
+        {
+          "name": "Listar equipes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/equipes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "equipes"]
+            }
+          }
+        },
+        {
+          "name": "Buscar equipe por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/equipes/{{equipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "equipes", "{{equipeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar equipe",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Equipe de Backend Atualizada\",\n  \"descricao\": \"Equipe principal de arquitetura e API.\",\n  \"idProjeto\": 1,\n  \"idUsuario\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/equipes/{{equipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "equipes", "{{equipeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir equipe",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/equipes/{{equipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "equipes", "{{equipeId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ANEXOS",
+      "item": [
+        {
+          "name": "Criar anexo",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idTarefa\": 1,\n  \"nomeArquivo\": \"requisitos.pdf\",\n  \"urlArquivo\": \"https://example.com/files/requisitos.pdf\",\n  \"tipoArquivo\": \"PDF\",\n  \"idUsuario\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos"]
+            }
+          }
+        },
+        {
+          "name": "Listar anexos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar anexos por tarefa",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos?tarefaId={{tarefaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos"],
+              "query": [
+                { "key": "tarefaId", "value": "{{tarefaId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar anexo por ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos/{{anexoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos", "{{anexoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar anexo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idTarefa\": 1,\n  \"nomeArquivo\": \"requisitos-atualizado.pdf\",\n  \"urlArquivo\": \"https://example.com/files/requisitos-atualizado.pdf\",\n  \"tipoArquivo\": \"PDF\",\n  \"idUsuario\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos/{{anexoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos", "{{anexoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir anexo",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/anexos/{{anexoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "anexos", "{{anexoId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
