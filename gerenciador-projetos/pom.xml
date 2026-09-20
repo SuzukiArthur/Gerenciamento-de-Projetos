@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+<<<<<<< Updated upstream
         <groupId>br.unisales</groupId>
         <artifactId>gerenciador-projetos-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
@@ -13,10 +14,36 @@
     <artifactId>gerenciador-projetos</artifactId>
     <name>gerenciador-projetos</name>
     <description>API de gerenciamento de projetos</description>
+=======
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>br.unisales</groupId>
+    <artifactId>gerenciador-projetos</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Gerenciador de Projetos</name>
+    <description>API REST para gerenciamento de projetos, tarefas, anexos e equipes.</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springdoc.version>2.6.0</springdoc.version>
+    </properties>
+    >>>>>>> Stashed changes
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+<<<<<<< Updated upstream
+=======
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+>>>>>>> Stashed changes
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
@@ -25,16 +52,22 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+<<<<<<< Updated upstream
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+=======
+>>>>>>> Stashed changes
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+<<<<<<< Updated upstream
             <version>1.18.42</version>
+=======
+>>>>>>> Stashed changes
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -43,6 +76,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+<<<<<<< Updated upstream
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa-test</artifactId>
             <scope>test</scope>
@@ -60,6 +94,20 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
+=======
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+>>>>>>> Stashed changes
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -67,6 +115,7 @@
     <build>
         <plugins>
             <plugin>
+<<<<<<< Updated upstream
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -82,6 +131,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+=======
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+>>>>>>> Stashed changes
             </plugin>
         </plugins>
     </build>
