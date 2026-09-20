@@ -24,7 +24,7 @@ API REST para gerenciar projetos, tarefas, equipes, usuários e anexos, constru�
 - CRUD completo de usuários, projetos, tarefas, equipes e anexos
 - Listagem de tarefas por projeto ou por responsável
 - Listagem de anexos por tarefa
-- Listagem paginada e orden├ível de projetos
+- Listagem paginada e ordenável de projetos
 - Validação dos dados de entrada com mensagens de erro por campo
 - DTOs de entrada e saída: a senha do usuário nunca é devolvida nas respostas
 - Autenticação HTTP Basic (Spring Security)
