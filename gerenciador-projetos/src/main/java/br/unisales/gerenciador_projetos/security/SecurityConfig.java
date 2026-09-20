@@ -1,4 +1,3 @@
-
 package br.unisales.gerenciador_projetos.security;
 
 import org.springframework.context.annotation.Bean;
