@@ -2,6 +2,7 @@ package br.unisales.gerenciador_projetos.service;
 
 import br.unisales.gerenciador_projetos.entity.Usuario;
 import br.unisales.gerenciador_projetos.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository) {
+    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Usuario> listarTodos() {
@@ -25,6 +28,7 @@ public class UsuarioService {
     }
 
     public Usuario salvar(Usuario usuario) {
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return repository.save(usuario);
     }
 
@@ -34,7 +38,7 @@ public class UsuarioService {
 
         usuarioExistente.setNome(usuario.getNome());
         usuarioExistente.setLogin(usuario.getLogin());
-        usuarioExistente.setSenha(usuario.getSenha());
+        usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuarioExistente.setFuncao(usuario.getFuncao());
 
         return repository.save(usuarioExistente);
