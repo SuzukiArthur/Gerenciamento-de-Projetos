@@ -15,12 +15,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -46,12 +46,12 @@ class ControllersTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean private UsuarioService usuarioService;
-    @MockitoBean private ProjetoService projetoService;
-    @MockitoBean private TarefaService tarefaService;
-    @MockitoBean private AnexoService anexoService;
-    @MockitoBean private ProjetoRepository projetoRepository; 
-    @MockitoBean private EquipeRepository equipeRepository;   
+    @MockBean private UsuarioService usuarioService;
+    @MockBean private ProjetoService projetoService;
+    @MockBean private TarefaService tarefaService;
+    @MockBean private AnexoService anexoService;
+    @MockBean private ProjetoRepository projetoRepository;
+    @MockBean private EquipeRepository equipeRepository;
 
     private Usuario usuario;
     private Projeto projeto;

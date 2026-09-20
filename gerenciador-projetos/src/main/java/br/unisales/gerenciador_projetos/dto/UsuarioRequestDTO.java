@@ -20,6 +20,29 @@ public record UsuarioRequestDTO(
         String funcao
 ) {
 
+    public UsuarioRequestDTO {
+        if (nome != null) {
+            nome = nome.trim();
+            if (nome.isBlank()) {
+                nome = null;
+            }
+        }
+
+        if (login != null) {
+            login = login.trim();
+            if (login.isBlank()) {
+                login = null;
+            }
+        }
+
+        if (senha != null) {
+            senha = senha.trim();
+            if (senha.isBlank()) {
+                senha = null;
+            }
+        }
+    }
+
     public Usuario paraEntidade() {
         Usuario usuario = new Usuario();
         usuario.setNome(nome);

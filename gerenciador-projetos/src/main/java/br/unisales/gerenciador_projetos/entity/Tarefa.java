@@ -47,4 +47,84 @@ public class Tarefa {
     // Uma tarefa pode possuir vários anexos
     @OneToMany(mappedBy = "tarefa")
     private List<Anexo> anexos;
+
+    public Long getIdTarefa() {
+        return idTarefa;
+    }
+
+    public void setIdTarefa(Long idTarefa) {
+        this.idTarefa = idTarefa;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public LocalDate getPrazo() {
+        return prazo;
+    }
+
+    public void setPrazo(LocalDate prazo) {
+        this.prazo = prazo;
+    }
+
+    public String getPrioridade() {
+        return prioridade;
+    }
+
+    public void setPrioridade(String prioridade) {
+        this.prioridade = prioridade;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Projeto getProjeto() {
+        return projeto;
+    }
+
+    public void setProjeto(Projeto projeto) {
+        this.projeto = projeto;
+    }
+
+    public Usuario getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(Usuario responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    public List<Anexo> getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(List<Anexo> anexos) {
+        this.anexos = anexos;
+    }
 }
