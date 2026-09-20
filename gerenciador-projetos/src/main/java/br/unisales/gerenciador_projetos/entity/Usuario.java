@@ -22,9 +22,10 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String login;
 
-    @Column(nullable = false)
+    @Column(name = "Senha", nullable = false)
     private String senha;
 
+    @Column(name = "Função")
     private String funcao;
 
     @OneToMany(mappedBy = "responsavel")

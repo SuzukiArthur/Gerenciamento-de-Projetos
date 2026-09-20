@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: br.unisales.gerenciador_projetos.ControllersTest$Anexos
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.301 s -- in br.unisales.gerenciador_projetos.ControllersTest$Anexos
