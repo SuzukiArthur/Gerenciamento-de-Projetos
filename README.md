@@ -300,8 +300,18 @@ cd gerenciador-projetos
 mvn test
 ```
 
+Para executar somente os testes unitários de serviço:
+
+```bash
+mvn -Dtest=ProjetoServiceTest,UsuarioServiceTest test
+```
+
+Nos testes de serviço, o JUnit executa cada método marcado com `@Test`; o Mockito substitui dependências externas, como repositórios e o codificador de senha. `@Mock` cria essas dependências simuladas e `@InjectMocks` as injeta no serviço. `when(...).thenReturn(...)` define como uma simulação responde, asserções (`assertEquals`, `assertThrows`) conferem o resultado e `verify(...)` confirma que a dependência foi chamada.
+
 | Classe                                | O que cobre                                                                                                                                                                         |
 |---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `ControllersTest`                     | Os cinco controllers, com MockMvc e services mockados (sem banco e sem subir o Spring): status HTTP, validação (`400`), `404`, `Location` do `201`, filtros, paginação e ausência da senha nas respostas. Login e perfis do Spring Security ficam de fora. |
 | `DtoTest`                             | Conversão entre entidade e DTO e regras de validação.                                                                                                                               |
+| `ProjetoServiceTest`                  | Operações do serviço de projetos, incluindo atualização, busca inexistente e exclusão, sem acessar o banco.                                                                         |
+| `UsuarioServiceTest`                  | Operações do serviço de usuários e codificação de senha simulada com Mockito, sem acessar o banco.                                                                                   |
 | `GerenciadorProjetosApplicationTests` | Confere se o contexto do Spring sobe. Precisa do MySQL rodando com o banco criado.                                                                                              |
