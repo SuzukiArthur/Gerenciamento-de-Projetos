@@ -1,5 +1,6 @@
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\config\OpenApiConfig.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\controller\AnexoController.java
+C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\controller\AuthController.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\controller\EquipeController.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\controller\ProjetoController.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\controller\TarefaController.java
@@ -9,6 +10,8 @@ C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\s
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\EquipeRequestDTO.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\EquipeResponseDTO.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\EquipeResumoDTO.java
+C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\LoginRequestDTO.java
+C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\LoginResponseDTO.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\PageResponseDTO.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\ProjetoRequestDTO.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\dto\ProjetoResponseDTO.java
@@ -32,6 +35,8 @@ C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\s
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\repository\TarefaRepository.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\repository\UsuarioRepository.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\security\DatabaseUserDetailsService.java
+C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\security\JwtAuthenticationFilter.java
+C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\security\JwtService.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\security\SecurityConfig.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\service\AnexoService.java
 C:\Users\felip\OneDrive\Desktop\Gerenciamento-de-Projetos\gerenciador-projetos\src\main\java\br\unisales\gerenciador_projetos\service\ProjetoService.java
