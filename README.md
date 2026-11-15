@@ -137,9 +137,7 @@ cd gerenciador-projetos
 mvn spring-boot:run
 ```
 
-A API fica disponível em `http://localhost:8080`.
-
--`http://localhost:8080/swagger-ui/index.html` -
+A API fica disponível em `http://localhost:8080/swagger-ui/index.html`.
 
 Para gerar o `.jar` e executá-lo:
 
