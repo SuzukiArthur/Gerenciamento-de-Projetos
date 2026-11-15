@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 
 import br.unisales.gerenciador_projetos.dto.UsuarioRequestDTO;
 import br.unisales.gerenciador_projetos.dto.UsuarioResponseDTO;
