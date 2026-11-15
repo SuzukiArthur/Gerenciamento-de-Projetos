@@ -1,8 +1,16 @@
+br\unisales\gerenciador_projetos\ControllersTest$Usuarios.class
+br\unisales\gerenciador_projetos\ControllersTest$Anexos.class
+br\unisales\gerenciador_projetos\ControllersTest.class
+br\unisales\gerenciador_projetos\ControllersTest$Tarefas.class
 br\unisales\gerenciador_projetos\DtoTest$ProjetoDtos.class
 br\unisales\gerenciador_projetos\DtoTest$TarefaDtos.class
+br\unisales\gerenciador_projetos\ProjetoServiceTest.class
 br\unisales\gerenciador_projetos\DtoTest$PageResponseDtoTest.class
 br\unisales\gerenciador_projetos\DtoTest.class
 br\unisales\gerenciador_projetos\DtoTest$EquipeDtos.class
 br\unisales\gerenciador_projetos\DtoTest$UsuarioDtos.class
+br\unisales\gerenciador_projetos\ControllersTest$Equipes.class
 br\unisales\gerenciador_projetos\DtoTest$AnexoDtos.class
 br\unisales\gerenciador_projetos\GerenciadorProjetosApplicationTests.class
+br\unisales\gerenciador_projetos\UsuarioServiceTest.class
+br\unisales\gerenciador_projetos\ControllersTest$Projetos.class

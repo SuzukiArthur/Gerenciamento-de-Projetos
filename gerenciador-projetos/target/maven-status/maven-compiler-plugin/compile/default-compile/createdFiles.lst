@@ -1,6 +1,7 @@
 br\unisales\gerenciador_projetos\controller\UsuarioController.class
 br\unisales\gerenciador_projetos\entity\Equipe.class
 br\unisales\gerenciador_projetos\repository\AnexoRepository.class
+br\unisales\gerenciador_projetos\security\JwtService.class
 br\unisales\gerenciador_projetos\controller\EquipeController.class
 br\unisales\gerenciador_projetos\controller\TarefaController.class
 br\unisales\gerenciador_projetos\repository\TarefaRepository.class
@@ -21,15 +22,19 @@ br\unisales\gerenciador_projetos\dto\UsuarioResumoDTO.class
 br\unisales\gerenciador_projetos\exception\ResourceNotFoundException.class
 br\unisales\gerenciador_projetos\entity\Anexo.class
 br\unisales\gerenciador_projetos\entity\Tarefa.class
+br\unisales\gerenciador_projetos\dto\LoginRequestDTO.class
 br\unisales\gerenciador_projetos\dto\TarefaRequestDTO.class
 br\unisales\gerenciador_projetos\dto\TarefaResponseDTO.class
 br\unisales\gerenciador_projetos\dto\AnexoResponseDTO.class
 br\unisales\gerenciador_projetos\dto\ProjetoRequestDTO.class
 br\unisales\gerenciador_projetos\config\OpenApiConfig.class
+br\unisales\gerenciador_projetos\security\JwtAuthenticationFilter.class
 br\unisales\gerenciador_projetos\service\AnexoService.class
 br\unisales\gerenciador_projetos\dto\ProjetoResumoDTO.class
 br\unisales\gerenciador_projetos\dto\UsuarioResponseDTO.class
 br\unisales\gerenciador_projetos\repository\ProjetoRepository.class
+br\unisales\gerenciador_projetos\controller\AuthController.class
+br\unisales\gerenciador_projetos\dto\LoginResponseDTO.class
 br\unisales\gerenciador_projetos\dto\EquipeRequestDTO.class
 br\unisales\gerenciador_projetos\entity\Usuario.class
 br\unisales\gerenciador_projetos\dto\AnexoRequestDTO.class
