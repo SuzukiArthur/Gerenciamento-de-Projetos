@@ -1,220 +1,124 @@
 # Gerenciamento de Projetos
+**Integrantes:** Alice Martins Miranda, Arthur Souza Ribeiro, Arthur Yuji Mendes Suzuki, Felipe Souza de Jesus e Luiz Miguel Mazega Lamas.
 
-- Integrantes: Alice Martins Miranda, Arthur Souza Ribeiro, Arthur Yuji Mendes Suzuki, Felipe Souza de Jesus e Luiz Miguel Mazega Lamas
-
-API REST para acompanhar projetos, tarefas, equipes, usuários e anexos, construída com Spring Boot e MySQL, com autenticação HTTP Basic e documentação interativa via Swagger.
-
-## Sumário
-
-- [Funcionalidades](#funcionalidades)
-- [Tecnologias](#tecnologias)
-- [Modelo de dados](#modelo-de-dados)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Como executar](#como-executar)
-- [Autenticação e permissões](#autenticação-e-permissões)
-- [Endpoints](#endpoints)
-- [Exemplos de uso](#exemplos-de-uso)
-- [Regras e detalhes da API](#regras-e-detalhes-da-api)
-- [Testes](#testes)
+API REST para o gerenciamento de projetos, tarefas, equipes, usuários e anexos, desenvolvida em Java com Spring Boot como trabalho acadêmico da UNISALES.
 
 ## Funcionalidades
 
-- CRUD completo de usuários, projetos, tarefas, equipes e anexos.
-- Listagem de tarefas por projeto ou por responsável.
-- Listagem de projetos com paginação e ordenação.
+- Cadastro, consulta, atualização e exclusão de usuários, projetos, tarefas, equipes e anexos.
+- Consulta de tarefas por projeto ou por responsável.
+- Listagem paginada e ordenável de projetos.
 - Validação dos dados de entrada, com mensagens de erro por campo.
-- Controle de acesso por perfil (`ADMIN` e demais usuários).
-- Documentação OpenAPI/Swagger e collection do Postman prontas para uso.
+- Autenticação por token JWT e controle de acesso por perfil (administrador e usuário comum).
+- Documentação interativa via Swagger e collection do Postman.
 
-## Tecnologias
+## Tecnologias Usadas
 
-| Camada         | Tecnologia                                                    |
-|----------------|---------------------------------------------------------------|
-| Linguagem      | Java 21                                                       |
-| Framework      | Spring Boot 4.1.1 (Web MVC, Data JPA, Validation, Security)   |
-| Banco de dados | MySQL 8                                                       |
-| Documentação   | springdoc-openapi 3.1.1 (Swagger UI)                          |
-| Utilitários    | Lombok                                                        |
-| Build          | Maven                                                         |
-| Testes         | JUnit 5, Mockito e MockMvc                                    |
+- Java 21
+- Spring Boot 4 (Web, Data JPA, Validation e Security)
+- JWT (jjwt)
+- H2 (padrão) ou MySQL 8
+- springdoc-openapi (Swagger)
+- Maven
+- JUnit 5 e Mockito
 
-## Modelo de dados
+## Execução
 
-```mermaid
-erDiagram
-    USUARIO  |o--o{ TAREFA  : "é responsável por"
-    USUARIO  |o--o{ EQUIPE  : "lidera"
-    PROJETOS ||--o{ TAREFA  : "contém"
-    PROJETOS |o--o{ EQUIPE  : "tem"
-    TAREFA   ||--o{ ANEXO   : "possui"
-```
-
-Comportamento das chaves estrangeiras (definido em `Gerenciamentoprojeto.sql`):
-
-- Excluir um projeto exclui suas tarefas e, em cascata, os anexos delas.
-- Excluir uma tarefa exclui seus anexos.
-- Excluir um usuário mantém as tarefas e equipes dele, apenas removendo o vínculo (responsável/líder fica vazio).
-- Excluir um projeto mantém as equipes, sem o vínculo com o projeto.
-
-## Estrutura do projeto
-
-```
-Gerenciamento-de-Projetos/
-├── Gerenciamentoprojeto.sql                        # script de criação do banco
-├── Gerenciamento-Projetos.postman_collection.json  # requisições prontas
-├── pom.xml                                         # POM pai (Spring Boot 4.1.1, Java 21)
-└── gerenciador-projetos/                           # módulo da aplicação
-    ├── pom.xml
-    └── src/
-        ├── main/
-        │   ├── java/br/unisales/gerenciador_projetos/
-        │   │   ├── controller/   # rotas REST
-        │   │   ├── service/      # regras de negócio
-        │   │   ├── repository/   # acesso ao banco (Spring Data JPA)
-        │   │   ├── entity/       # entidades JPA
-        │   │   ├── dto/          # objetos de entrada e saída da API
-        │   │   ├── exception/    # tratamento global de erros
-        │   │   ├── security/     # login (HTTP Basic) e permissões
-        │   │   └── config/       # configuração do Swagger/OpenAPI
-        │   └── resources/
-        │       └── application.properties
-        └── test/java/br/unisales/gerenciador_projetos/
-            ├── ControllersTest.java
-            ├── DtoTest.java
-            └── GerenciadorProjetosApplicationTests.java
-```
-
-## Como executar
-
-### Pré-requisitos
-
-- JDK 21
-- Maven 3.9 ou superior
-- MySQL 8 em execução na porta `3306`
-
-### 1. Clonar o repositório
+São necessários o JDK 21 e o Maven. Não é preciso instalar um banco de dados para executar o projeto.
 
 ```bash
 git clone <url-do-repositorio>
-cd Gerenciamento-de-Projetos
+cd Gerenciamento-de-Projetos/gerenciador-projetos
+mvn spring-boot:run
 ```
 
-### 2. Criar o banco de dados
+A aplicação ficará disponível em `http://localhost:8080`, e a documentação do Swagger em `http://localhost:8080/swagger-ui.html`.
 
-O script cria o banco `gestao_projetos` e todas as tabelas:
+Por padrão, a aplicação utiliza o banco H2 em memória. As tabelas são criadas automaticamente, mas os dados são perdidos sempre que a aplicação é encerrada.
+
+### Configuração do MySQL (opcional)
+
+Para manter os dados de forma persistente, crie o banco de dados com o script disponível na raiz do projeto:
 
 ```bash
 mysql -u root -p < Gerenciamentoprojeto.sql
 ```
 
-> A aplicação usa `spring.jpa.hibernate.ddl-auto=none`: ela não cria nem altera tabelas sozinha. O script SQL precisa ser executado antes.
-
-### 3. Configurar as credenciais do banco
-
-A conexão usa `jdbc:mysql://localhost:3306/gestao_projetos` e lê usuário e senha de variáveis de ambiente:
-
-| Variável      | Padrão | Descrição            |
-|---------------|--------|----------------------|
-| `DB_USER`     | `root` | Usuário do MySQL     |
-| `DB_PASSWORD` | `2501` | Senha do MySQL       |
-
-Defina as suas antes de subir a aplicação:
+Em seguida, defina as variáveis de ambiente abaixo antes de iniciar a aplicação:
 
 ```bash
-# Linux / macOS
+export DB_URL=jdbc:mysql://localhost:3306/gestao_projetos
 export DB_USER=root
 export DB_PASSWORD=sua_senha
-
-# Windows (PowerShell)
-$env:DB_USER="root"
-$env:DB_PASSWORD="sua_senha"
+export DB_DRIVER=com.mysql.cj.jdbc.Driver
+export DB_DIALECT=org.hibernate.dialect.MySQLDialect
 ```
 
-### 4. Subir a aplicação
+No Windows (PowerShell), utilize `$env:NOME="valor"` no lugar de `export NOME=valor`.
 
-```bash
-cd gerenciador-projetos
-mvn spring-boot:run
-```
+### Demais variáveis de ambiente
 
-A API fica disponível em `http://localhost:8080/swagger-ui/index.html`.
+| Variável            | Valor padrão       | Descrição                                                                                         |
+|---------------------|--------------------|---------------------------------------------------------------------------------------------------|
+| `JWT_SECRET`        | chave de exemplo   | Chave utilizada para assinar os tokens. Deve ser alterada em produção e ter mais de 32 caracteres |
+| `JWT_EXPIRATION_MS` | `3600000` (1 hora) | Tempo de validade do token, em milissegundos                                                      |
 
-Para gerar o `.jar` e executá-lo:
+## Primeiros passos
 
-```bash
-mvn clean package
-java -jar target/gerenciador-projetos-0.0.1-SNAPSHOT.jar
-```
-
-### 5. Criar o primeiro usuário administrador
-
-Todas as rotas (exceto o cadastro de usuário e o Swagger) exigem autenticação. Como o banco começa vazio, o primeiro acesso é criando um administrador pela rota pública de cadastro:
+1. Criar um usuário. A rota de cadastro é pública. Como o banco inicia vazio, o primeiro usuário criado sem o campo `funcao` recebe automaticamente o perfil `ADMIN`.
 
 ```bash
 curl -X POST http://localhost:8080/api/usuarios \
   -H "Content-Type: application/json" \
-  -d '{
-    "nome": "Administrador",
-    "login": "admin",
-    "senha": "admin123",
-    "funcao": "ADMIN"
-  }'
+  -d '{"nome": "Administrador", "login": "admin", "senha": "admin123"}'
 ```
 
-A partir daí, use `admin` / `admin123` nas demais requisições.
+2. Realizar o login. A resposta contém o campo `token`.
 
-## Autenticação e permissões
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"login": "admin", "senha": "admin123"}'
+```
 
-A API usa HTTP Basic (sessão stateless): envie `login` e `senha` em toda requisição.
+3. Utilizar o token nas demais requisições.
 
-| Rota                                   | Quem acessa                  |
-|----------------------------------------|------------------------------|
-| `/swagger-ui/**` e `/v3/api-docs/**`   | Público                      |
-| `POST /api/usuarios` (cadastro)        | Público                      |
-| Demais rotas de `/api/usuarios/**`     | Apenas perfil `ADMIN`        |
-| Todas as outras rotas                  | Qualquer usuário autenticado |
+```bash
+curl http://localhost:8080/api/projetos \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI"
+```
 
-O perfil vem do campo `funcao` do usuário: o valor é convertido para maiúsculas e vira a autoridade `ROLE_<FUNCAO>` (por exemplo, `admin` → `ROLE_ADMIN`). Se `funcao` estiver vazio, o usuário recebe `USER`.
+No Swagger, o token deve ser informado no botão **Authorize**, localizado no topo da página.
+
+## Permissões de acesso
+
+| Rota                                                   | Acesso                       |
+|--------------------------------------------------------|------------------------------|
+| Swagger, `POST /api/auth/login` e `POST /api/usuarios` | Público                      |
+| Demais rotas de `/api/usuarios`                        | Somente `ADMIN`              |
+| Qualquer requisição `DELETE`                           | Somente `ADMIN`              |
+| Demais rotas                                           | Qualquer usuário autenticado |
+
+Requisições sem token válido recebem o status `401`. Requisições autenticadas, mas sem permissão, recebem o status `403`.
 
 ## Endpoints
 
-Todos ficam sob o prefixo `/api`.
+Todos os endpoints possuem o prefixo `/api`.
 
-| Recurso     | Rotas                                                                    |
-|-------------|--------------------------------------------------------------------------|
-| `/usuarios` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}`                  |
-| `/projetos` | as mesmas cinco + `GET /paginado` e `GET /{id}/tarefas`                  |
-| `/tarefas`  | as mesmas cinco, o `GET` aceita `?projetoId=` ou `?responsavelId=`       |
-| `/equipes`  | as mesmas cinco                                                          |
-| `/anexos`   | as mesmas cinco, o `GET` aceita `?tarefaId=`                             |
+| Recurso       | Operações disponíveis                                                            |
+|---------------|----------------------------------------------------------------------------------|
+| `/usuarios`   | listar, buscar por id, criar, atualizar e excluir                                |
+| `/projetos`   | as mesmas operações, além de `GET /paginado` e `GET /{id}/tarefas`               |
+| `/tarefas`    | as mesmas operações. O `GET` aceita os filtros `?projetoId=` e `?responsavelId=` |
+| `/equipes`    | as mesmas operações                                                              |
+| `/anexos`     | as mesmas operações. O `GET` aceita o filtro `?tarefaId=`                        |
+| `/auth/login` | `POST` que retorna o token de acesso                                             |
 
-Códigos de resposta: `200` (consulta e atualização), `201` (criação, com o cabeçalho `Location`), `204` (exclusão), `400` (dados inválidos) e `404` (equipe não encontrada).
-
-## Exemplos de uso
-
-Os exemplos assumem o administrador criado no passo 5.
-
-**Criar um projeto**
-
-```bash
-curl -X POST http://localhost:8080/api/projetos \
-  -u admin:admin123 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "Portal do Cliente",
-    "supervisor": "Maria Souza",
-    "descricao": "Novo portal de atendimento",
-    "dataInicio": "2026-03-01",
-    "dataFim": "2026-08-31",
-    "status": "Em Andamento"
-  }'
-```
-
-**Criar uma tarefa**
+### Exemplo: criação de uma tarefa
 
 ```bash
 curl -X POST http://localhost:8080/api/tarefas \
-  -u admin:admin123 \
+  -H "Authorization: Bearer SEU_TOKEN_AQUI" \
   -H "Content-Type: application/json" \
   -d '{
     "titulo": "Implementar login",
@@ -226,72 +130,59 @@ curl -X POST http://localhost:8080/api/tarefas \
   }'
 ```
 
-**Criar uma equipe** (`idUsuario` é o líder)
+### Exemplo: listagem paginada de projetos
 
 ```bash
-curl -X POST http://localhost:8080/api/equipes \
-  -u admin:admin123 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "Backend",
-    "descricao": "Equipe da API",
-    "idProjeto": 1,
-    "idUsuario": 1
-  }'
-```
-
-**Registrar um anexo** (só a URL do arquivo é guardada)
-
-```bash
-curl -X POST http://localhost:8080/api/anexos \
-  -u admin:admin123 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "idTarefa": 1,
-    "nomeArquivo": "especificacao.pdf",
-    "urlArquivo": "https://exemplo.com/especificacao.pdf",
-    "tipoArquivo": "application/pdf"
-  }'
-```
-
-**Listar projetos com paginação**
-
-```bash
-curl -u admin:admin123 \
+curl -H "Authorization: Bearer SEU_TOKEN_AQUI" \
   "http://localhost:8080/api/projetos/paginado?pagina=0&tamanho=10&ordenarPor=idProjeto"
 ```
 
-A resposta traz `conteudo`, `pagina`, `tamanho`, `totalElementos`, `totalPaginas`, `primeira` e `ultima`.
+A numeração das páginas inicia em `0`. O parâmetro `ordenarPor` deve receber o nome de um atributo do projeto, como `idProjeto`, `nome` ou `dataInicio`.
 
-**Exemplo de erro de validação (`400`)**
+## Campos obrigatórios
 
-```json
-{
-  "nome": "O nome do projeto é obrigatório"
-}
+| Recurso | Obrigatórios                            | Observações                                                     |
+|---------|-----------------------------------------|-----------------------------------------------------------------|
+| Usuário | `nome`, `login`, `senha`                | O login deve ter entre 3 e 50 caracteres e a senha, no mínimo 6 |
+| Projeto | `nome`                                  | Máximo de 255 caracteres                                        |
+| Tarefa  | `titulo`, `idProjeto`                   | `idResponsavel` é opcional                                      |
+| Equipe  | `nome`                                  | `idProjeto` e `idUsuario` (líder) são opcionais                 |
+| Anexo   | `idTarefa`, `nomeArquivo`, `urlArquivo` | Apenas a URL do arquivo é armazenada                            |
+
+Observações gerais:
+
+- As datas seguem o formato `yyyy-MM-dd`.
+- Os campos `status` e `prioridade` são de texto livre.
+- A operação `PUT` substitui todos os campos, sendo necessário enviar o objeto completo (no caso de usuários, inclusive a senha).
+- As listagens de usuários, projetos e equipes retornam dados resumidos. O registro completo é obtido pela busca por id.
+- Em `/tarefas`, se `projetoId` e `responsavelId` forem enviados juntos, apenas `projetoId` é considerado.
+
+## Comportamento na exclusão
+
+- A exclusão de um projeto remove suas tarefas e os anexos dessas tarefas. As equipes são mantidas, apenas sem o vínculo com o projeto.
+- A exclusão de uma tarefa remove os seus anexos.
+- A exclusão de um usuário mantém suas tarefas e equipes, deixando o responsável ou líder em branco.
+
+## Estrutura do projeto
+
 ```
-
-## Regras e detalhes da API
-
-**Campos obrigatórios**
-
-| Recurso | Obrigatórios                             | Observações                                           |
-|---------|------------------------------------------|-------------------------------------------------------|
-| Usuário | `nome`, `login`, `senha`                 | `login` de 3 a 50 caracteres; `senha` com no mínimo 6 |
-| Projeto | `nome`                                   | máximo de 255 caracteres                              |
-| Tarefa  | `titulo`, `idProjeto`                    | `idResponsavel` é opcional                            |
-| Equipe  | `nome`                                   | `idProjeto` e `idUsuario` (líder) são opcionais       |
-| Anexo   | `idTarefa`, `nomeArquivo`, `urlArquivo`  | `tipoArquivo` e `idUsuario` são opcionais             |
-
-**Comportamento geral**
-
-- Datas usam o formato `yyyy-MM-dd`.
-- `status` e `prioridade` são texto livre, sem enum. O script SQL sugere valores como *Baixa, Média, Alta, Crítica* (prioridade) e *A fazer, Em andamento, Concluída, Bloqueada* (status da tarefa).
-- As listagens de usuários, projetos e equipes voltam resumidas; a busca por id traz o registro completo.
-- Em `/tarefas`, se `projetoId` e `responsavelId` vierem juntos, só o `projetoId` é considerado.
-- Na paginação, `pagina` começa em `0` e `ordenarPor` deve ser o nome de um atributo do projeto (`idProjeto`, `nome`, `dataInicio`, etc.).
-- `PUT` substitui todos os campos: envie o corpo completo, inclusive a `senha` ao atualizar um usuário.
-- O anexo guarda apenas a URL do arquivo.
+Gerenciamento-de-Projetos/
+├── Gerenciamentoprojeto.sql                        # script do banco de dados (MySQL)
+├── Gerenciamento-Projetos.postman_collection.json  # requisições para o Postman
+├── pom.xml
+└── gerenciador-projetos/
+    └── src/
+        ├── main/java/br/unisales/gerenciador_projetos/
+        │   ├── controller/   # rotas da API
+        │   ├── service/      # regras de negócio
+        │   ├── repository/   # acesso ao banco de dados
+        │   ├── entity/       # entidades JPA
+        │   ├── dto/          # objetos de entrada e saída
+        │   ├── security/     # JWT e permissões
+        │   ├── exception/    # tratamento de erros
+        │   └── config/       # configuração do Swagger
+        └── test/             # testes automatizados
+```
 
 ## Testes
 
@@ -300,18 +191,4 @@ cd gerenciador-projetos
 mvn test
 ```
 
-Para executar somente os testes unitários de serviço:
-
-```bash
-mvn -Dtest=ProjetoServiceTest,UsuarioServiceTest test
-```
-
-Nos testes de serviço, o JUnit executa cada método marcado com `@Test`; o Mockito substitui dependências externas, como repositórios e o codificador de senha. `@Mock` cria essas dependências simuladas e `@InjectMocks` as injeta no serviço. `when(...).thenReturn(...)` define como uma simulação responde, asserções (`assertEquals`, `assertThrows`) conferem o resultado e `verify(...)` confirma que a dependência foi chamada.
-
-| Classe                                | O que cobre                                                                                                                                                                         |
-|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ControllersTest`                     | Os cinco controllers, com MockMvc e services mockados (sem banco e sem subir o Spring): status HTTP, validação (`400`), `404`, `Location` do `201`, filtros, paginação e ausência da senha nas respostas. Login e perfis do Spring Security ficam de fora. |
-| `DtoTest`                             | Conversão entre entidade e DTO e regras de validação.                                                                                                                               |
-| `ProjetoServiceTest`                  | Operações do serviço de projetos, incluindo atualização, busca inexistente e exclusão, sem acessar o banco.                                                                         |
-| `UsuarioServiceTest`                  | Operações do serviço de usuários e codificação de senha simulada com Mockito, sem acessar o banco.                                                                                   |
-| `GerenciadorProjetosApplicationTests` | Confere se o contexto do Spring sobe. Precisa do MySQL rodando com o banco criado.                                                                                              |
+Os testes cobrem os controllers (com MockMvc), os DTOs e os services de projeto e de usuário (com Mockito) e não dependem do MySQL. A autenticação e as permissões do Spring Security não são cobertas pelos testes atuais.
