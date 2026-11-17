@@ -1,7 +1,69 @@
 # Gerenciamento de Projetos
-**Integrantes:** Alice Martins Miranda, Arthur Souza Ribeiro, Arthur Yuji Mendes Suzuki, Felipe Souza de Jesus e Luiz Miguel Mazega Lamas.
 
-API REST para o gerenciamento de projetos, tarefas, equipes, usuários e anexos, desenvolvida em Java com Spring Boot como trabalho acadêmico da UNISALES.
+**Integrantes:**
+
+- Alice Martins Miranda
+- Arthur Souza Ribeiro
+- Arthur Yuji Mendes Suzuki
+- Felipe Souza de Jesus
+- Luiz Miguel Mazega Lamas
+
+## Objetivo
+
+Desenvolver uma API REST que permita acompanhar o andamento de projetos em uma organização, reunindo em um só lugar os projetos, as tarefas, as equipes, os usuários responsáveis e os anexos de cada tarefa. O sistema oferece autenticação e controle de acesso por perfil, de modo que apenas usuários autorizados possam consultar ou alterar as informações.
+
+Trabalho acadêmico desenvolvido na UNISALES, em Java com Spring Boot.
+
+## Arquitetura
+
+A aplicação é uma API REST monolítica, organizada em camadas, que segue o padrão do Spring MVC. Cada camada tem uma responsabilidade bem definida e se comunica apenas com a camada logo abaixo.
+
+```mermaid
+flowchart TD
+    C[Cliente: Swagger, Postman ou aplicação front-end] -->|HTTP + JSON| F[Filtro JWT e Spring Security]
+    F --> CT[Controller]
+    CT --> S[Service]
+    S --> R[Repository - Spring Data JPA]
+    R --> DB[(H2 ou MySQL)]
+```
+
+| Camada     | Responsabilidade                                                                  |
+|------------|-----------------------------------------------------------------------------------|
+| Security   | Autentica o usuário, gera e valida o token JWT e restringe o acesso por perfil    |
+| Controller | Recebe as requisições HTTP, valida os dados de entrada e devolve as respostas     |
+| DTO        | Define os dados que entram e saem da API, evitando expor as entidades diretamente |
+| Service    | Concentra as regras de negócio                                                    |
+| Repository | Acessa o banco de dados por meio do Spring Data JPA                               |
+| Entity     | Representa as tabelas do banco (usuário, projeto, tarefa, equipe e anexo)         |
+| Exception  | Trata os erros de forma centralizada e devolve mensagens padronizadas             |
+
+**Modelo de dados**
+
+```mermaid
+erDiagram
+    USUARIO  |o--o{ TAREFA  : "é responsável por"
+    USUARIO  |o--o{ EQUIPE  : "lidera"
+    PROJETOS ||--o{ TAREFA  : "contém"
+    PROJETOS |o--o{ EQUIPE  : "possui"
+    TAREFA   ||--o{ ANEXO   : "possui"
+```
+
+A autenticação é stateless: não há sessão no servidor, e o cliente envia o token JWT em todas as requisições.
+
+## Principais casos de uso
+
+| Ator                | Caso de uso                                                                             |
+|---------------------|-----------------------------------------------------------------------------------------|
+| Visitante           | Cadastrar-se no sistema                                                                 |
+| Visitante           | Realizar login e obter o token de acesso                                                |
+| Usuário autenticado | Criar, consultar e atualizar projetos                                                   |
+| Usuário autenticado | Listar projetos de forma paginada e ordenada                                            |
+| Usuário autenticado | Criar, consultar e atualizar tarefas, definindo prazo, prioridade, status e responsável |
+| Usuário autenticado | Consultar as tarefas de um projeto ou de um responsável                                 |
+| Usuário autenticado | Criar, consultar e atualizar equipes, indicando o projeto e o líder                     |
+| Usuário autenticado | Anexar um arquivo (por URL) a uma tarefa e consultar os anexos                          |
+| Administrador       | Gerenciar os usuários do sistema e definir seus perfis                                  |
+| Administrador       | Excluir projetos, tarefas, equipes e anexos                                             |
 
 ## Funcionalidades
 
@@ -12,7 +74,7 @@ API REST para o gerenciamento de projetos, tarefas, equipes, usuários e anexos,
 - Autenticação por token JWT e controle de acesso por perfil (administrador e usuário comum).
 - Documentação interativa via Swagger e collection do Postman.
 
-## Tecnologias Usadas
+## Tecnologias
 
 - Java 21
 - Spring Boot 4 (Web, Data JPA, Validation e Security)
@@ -88,7 +150,7 @@ curl http://localhost:8080/api/projetos \
   -H "Authorization: Bearer SEU_TOKEN_AQUI"
 ```
 
-No Swagger, o token deve ser informado no botão **Authorize**, localizado no topo da página.
+No Swagger, o token deve ser informado no botão Authorize, localizado no topo da página.
 
 ## Permissões de acesso
 
