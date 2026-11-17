@@ -127,7 +127,8 @@ No Windows (PowerShell), utilize `$env:NOME="valor"` no lugar de `export NOME=va
 
 ## Primeiros passos
 
-1. Criar um usuário. A rota de cadastro é pública. Como o banco inicia vazio, o primeiro usuário criado sem o campo `funcao` recebe automaticamente o perfil `ADMIN`.
+1. Criar um usuário:
+A rota de cadastro é pública. Como o banco inicia vazio, o primeiro usuário criado sem o campo `funcao` recebe automaticamente o perfil `ADMIN`.
 
 ```bash
 curl -X POST http://localhost:8080/api/usuarios \
@@ -135,7 +136,8 @@ curl -X POST http://localhost:8080/api/usuarios \
   -d '{"nome": "Administrador", "login": "admin", "senha": "admin123"}'
 ```
 
-2. Realizar o login. A resposta contém o campo `token`.
+2. Realizar o login:
+A resposta contém o campo `token`.
 
 ```bash
 curl -X POST http://localhost:8080/api/auth/login \
@@ -143,7 +145,7 @@ curl -X POST http://localhost:8080/api/auth/login \
   -d '{"login": "admin", "senha": "admin123"}'
 ```
 
-3. Utilizar o token nas demais requisições.
+3. Utilizar o token nas demais requisições:
 
 ```bash
 curl http://localhost:8080/api/projetos \
