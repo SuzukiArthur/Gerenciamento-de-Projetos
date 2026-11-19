@@ -52,18 +52,164 @@ A autenticação é stateless: não há sessão no servidor, e o cliente envia o
 
 ## Principais casos de uso
 
-| Ator                | Caso de uso                                                                             |
-|---------------------|-----------------------------------------------------------------------------------------|
-| Visitante           | Cadastrar-se no sistema                                                                 |
-| Visitante           | Realizar login e obter o token de acesso                                                |
-| Usuário autenticado | Criar, consultar e atualizar projetos                                                   |
-| Usuário autenticado | Listar projetos de forma paginada e ordenada                                            |
-| Usuário autenticado | Criar, consultar e atualizar tarefas, definindo prazo, prioridade, status e responsável |
-| Usuário autenticado | Consultar as tarefas de um projeto ou de um responsável                                 |
-| Usuário autenticado | Criar, consultar e atualizar equipes, indicando o projeto e o líder                     |
-| Usuário autenticado | Anexar um arquivo (por URL) a uma tarefa e consultar os anexos                          |
-| Administrador       | Gerenciar os usuários do sistema e definir seus perfis                                  |
-| Administrador       | Excluir projetos, tarefas, equipes e anexos                                             |
+```mermaid
+flowchart LR
+    V[Visitante]
+    U[Usuário autenticado]
+    A[Administrador]
+
+    CU1[Cadastrar usuário]
+    CU2[Realizar login]
+    CU3[Gerenciar projetos]
+    CU4[Consultar tarefas]
+    CU5[Gerenciar tarefas]
+    CU6[Gerenciar equipes]
+    CU7[Gerenciar anexos]
+    CU8[Gerenciar usuários]
+    CU9[Excluir recursos]
+
+    V --> CU1
+    V --> CU2
+    U --> CU3
+    U --> CU4
+    U --> CU5
+    U --> CU6
+    U --> CU7
+    A --> CU8
+    A --> CU9
+    CU1 -.-> CU2
+    CU3 -.-> CU4
+    CU3 -.-> CU5
+    CU5 -.-> CU7
+```
+
+### UC-01 - Cadastrar usuário
+
+- **Ator:** visitante ou administrador autenticado
+- **Pré-condição:** o usuário informa nome, login e senha válidos.
+- **Fluxo principal:**
+  1. O ator envia uma requisição `POST /api/usuarios`.
+  2. O sistema valida os campos obrigatórios e as regras de tamanho.
+  3. O sistema verifica se ainda não existe nenhum usuário.
+  4. O sistema criptografa a senha e salva o usuário.
+  5. Quando não existe usuário anterior, o primeiro cadastro recebe o perfil `ADMIN`; os cadastros públicos seguintes recebem `USER`.
+- **Fluxos alternativos:**
+  - Um administrador autenticado pode informar o perfil de um novo usuário.
+  - Dados inválidos retornam `400` com os erros por campo.
+- **Pós-condição:** o usuário fica disponível para autenticação.
+
+### UC-02 - Realizar login
+
+- **Ator:** visitante
+- **Pré-condição:** o usuário possui cadastro no sistema.
+- **Fluxo principal:**
+  1. O ator envia login e senha para `POST /api/auth/login`.
+  2. O sistema valida as credenciais.
+  3. O sistema gera um token JWT contendo o login e o perfil.
+  4. O sistema informa o token, o tipo `Bearer` e o tempo de expiração.
+- **Fluxos alternativos:**
+  - Credenciais inválidas retornam `401`.
+- **Pós-condição:** o usuário utiliza o token no cabeçalho `Authorization`.
+
+### UC-03 - Gerenciar projetos
+
+- **Ator:** usuário autenticado
+- **Pré-condição:** o usuário possui um token JWT válido.
+- **Fluxo principal:**
+  1. O usuário cria um projeto com `POST /api/projetos`.
+  2. O sistema valida os dados e salva o projeto.
+  3. O usuário consulta projetos por meio de `GET /api/projetos`.
+  4. O usuário pode consultar um projeto específico ou a listagem paginada e ordenada.
+  5. O usuário atualiza um projeto existente com `PUT /api/projetos/{id}`.
+- **Fluxos alternativos:**
+  - Projeto inexistente retorna erro de recurso não encontrado.
+  - Dados inválidos retornam `400`.
+- **Pós-condição:** o projeto é criado ou atualizado e pode conter tarefas e equipes.
+- **Regras específicas:** o campo `nome` é obrigatório e limitado a 255 caracteres.
+
+### UC-04 - Consultar tarefas
+
+- **Ator:** usuário autenticado
+- **Pré-condição:** o projeto, a tarefa ou o responsável consultado existe.
+- **Fluxo principal:**
+  1. O usuário solicita a lista de tarefas em `GET /api/tarefas`.
+  2. O sistema pode retornar todas as tarefas ou filtrar por `projetoId` ou `responsavelId`.
+  3. O usuário também pode consultar todas as tarefas de um projeto em `GET /api/projetos/{id}/tarefas`.
+- **Fluxos alternativos:**
+  - Quando ambos os filtros são enviados em `/api/tarefas`, `projetoId` prevalece.
+  - Projeto, responsável ou tarefa inexistente retorna erro de recurso não encontrado.
+- **Pós-condição:** o usuário recebe as tarefas correspondentes aos filtros.
+
+### UC-05 - Gerenciar tarefas
+
+- **Ator:** usuário autenticado
+- **Pré-condição:** o usuário está autenticado e o projeto referenciado existe.
+- **Fluxo principal:**
+  1. O usuário cria uma tarefa informando título, projeto e, opcionalmente, descrição, datas, prioridade, status e responsável.
+  2. O sistema valida os dados e associa a tarefa ao projeto e ao responsável informados.
+  3. O usuário consulta ou atualiza a tarefa.
+- **Fluxos alternativos:**
+  - Sem `idResponsavel`, a tarefa fica sem responsável definido.
+  - Sem projeto existente, a criação ou atualização é recusada.
+  - Dados inválidos retornam `400`.
+- **Pós-condição:** a tarefa é criada ou atualizada no projeto.
+
+### UC-06 - Gerenciar equipes
+
+- **Ator:** usuário autenticado
+- **Pré-condição:** o usuário está autenticado.
+- **Fluxo principal:**
+  1. O usuário cria uma equipe informando nome e, opcionalmente, descrição, projeto e líder.
+  2. O sistema valida os usuários e projetos referenciados.
+  3. O usuário consulta ou atualiza a equipe.
+- **Fluxos alternativos:**
+  - Projeto ou líder não informado é aceito.
+  - Identificador inválido retorna erro de recurso não encontrado.
+- **Pós-condição:** a equipe fica disponível com os vínculos informados.
+
+### UC-07 - Gerenciar anexos
+
+- **Ator:** usuário autenticado
+- **Pré-condição:** a tarefa referenciada existe.
+- **Fluxo principal:**
+  1. O usuário cria um anexo com o identificador da tarefa, nome do arquivo, tipo, URL e, opcionalmente, usuário.
+  2. O sistema valida os dados e associa o anexo à tarefa.
+  3. O usuário consulta todos os anexos ou filtra por `tarefaId`.
+  4. O usuário pode atualizar os dados ou a URL do anexo.
+- **Fluxos alternativos:**
+  - Somente a URL do arquivo é armazenada; o sistema não realiza upload do arquivo.
+  - Tarefa ou usuário inexistente retorna erro de recurso não encontrado.
+- **Pós-condição:** o anexo fica associado à tarefa.
+
+### UC-08 - Gerenciar usuários
+
+- **Ator:** administrador
+- **Pré-condição:** o administrador está autenticado e a rota `/api/usuarios/**` exige o perfil `ADMIN`.
+- **Fluxo principal:**
+  1. O administrador consulta todos os usuários ou busca um usuário por identificador.
+  2. O administrador atualiza dados e perfil do usuário.
+  3. O administrador pode excluir usuários, exceto regras adicionais impostas pela política futura do sistema.
+- **Fluxos alternativos:**
+  - Usuário sem perfil administrativo recebe `403`.
+  - Usuário não autenticado recebe `401`.
+- **Pós-condição:** os dados e perfis dos usuários ficam atualizados.
+
+### UC-09 - Excluir recursos
+
+- **Ator:** administrador
+- **Pré-condição:** o recurso existe e o usuário possui perfil `ADMIN`.
+- **Fluxo principal:**
+  1. O administrador envia uma requisição `DELETE` para `/api/projetos/{id}`, `/api/tarefas/{id}`, `/api/equipes/{id}` ou `/api/anexos/{id}`.
+  2. O sistema verifica o perfil e localiza o recurso.
+  3. O sistema remove o recurso e retorna `204`.
+- **Fluxos alternativos:**
+  - Usuário sem perfil administrativo recebe `403`.
+  - Recurso inexistente retorna erro de recurso não encontrado.
+- **Pós-condição:** o recurso é removido conforme as regras de integridade.
+- **Regras específicas:**
+  - Excluir projeto remove suas tarefas e os anexos dessas tarefas; as equipes permanecem sem vínculo com o projeto.
+  - Excluir tarefa remove seus anexos.
+  - Excluir usuário mantém suas tarefas e equipes, retirando os vínculos de responsável e líder.
 
 ## Funcionalidades
 
