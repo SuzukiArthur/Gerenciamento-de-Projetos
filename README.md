@@ -14,6 +14,12 @@ Desenvolver uma API REST que permita acompanhar o andamento de projetos em uma o
 
 Trabalho acadêmico desenvolvido na UNISALES, em Java com Spring Boot.
 
+## Banco de dados
+
+O projeto foi desenvolvido para MySQL 8, conforme a proposta da disciplina. O script de criação do banco (`Gerenciamentoprojeto.sql`), o driver `mysql-connector-j` e a configuração por variáveis de ambiente estão incluídos. O banco H2 em memória existe apenas como alternativa para executar a aplicação rapidamente, sem instalar nada, e é usado nos testes automatizados.
+
+Para executar com MySQL, siga a seção [Configuração do MySQL](#configuração-do-mysql).
+
 ## Arquitetura
 
 A aplicação é uma API REST monolítica, organizada em camadas, que segue o padrão do Spring MVC. Cada camada tem uma responsabilidade bem definida e se comunica apenas com a camada logo abaixo.
@@ -24,7 +30,7 @@ flowchart TD
     F --> CT[Controller]
     CT --> S[Service]
     S --> R[Repository - Spring Data JPA]
-    R --> DB[(H2 ou MySQL)]
+    R --> DB[(MySQL)]
 ```
 
 | Camada     | Responsabilidade                                                                  |
@@ -225,14 +231,14 @@ flowchart LR
 - Java 21
 - Spring Boot 4 (Web, Data JPA, Validation e Security)
 - JWT (jjwt)
-- H2 (padrão) ou MySQL 8
+- MySQL 8 (banco principal) e H2 (execução rápida e testes)
 - springdoc-openapi (Swagger)
 - Maven
 - JUnit 5 e Mockito
 
 ## Execução
 
-São necessários o JDK 21 e o Maven. Não é preciso instalar um banco de dados para executar o projeto.
+São necessários o JDK 21 e o Maven. Para a execução rápida abaixo não é preciso instalar um banco de dados, pois ela usa o H2 em memória. Para usar o MySQL, veja a próxima seção.
 
 ```bash
 git clone <url-do-repositorio>
@@ -242,11 +248,11 @@ mvn spring-boot:run
 
 A aplicação ficará disponível em `http://localhost:8080`, e a documentação do Swagger em `http://localhost:8080/swagger-ui.html`.
 
-Por padrão, a aplicação utiliza o banco H2 em memória. As tabelas são criadas automaticamente, mas os dados são perdidos sempre que a aplicação é encerrada.
+Sem nenhuma configuração, a aplicação utiliza o banco H2 em memória (modo de compatibilidade com MySQL). As tabelas são criadas automaticamente, mas os dados são perdidos sempre que a aplicação é encerrada. Para persistir os dados no MySQL, siga a seção abaixo.
 
-### Configuração do MySQL (opcional)
+### Configuração do MySQL
 
-Para manter os dados de forma persistente, crie o banco de dados com o script disponível na raiz do projeto:
+Para executar com o MySQL e manter os dados de forma persistente, crie o banco de dados com o script disponível na raiz do projeto:
 
 ```bash
 mysql -u root -p < Gerenciamentoprojeto.sql
